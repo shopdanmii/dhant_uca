@@ -1,0 +1,1651 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>DHANT_DANMII - CHECKSCAM</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #03030a;
+            font-family: 'Poppins', 'Segoe UI', system-ui, sans-serif;
+            color: #ffffff;
+            line-height: 1.5;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            padding: 1.5rem;
+        }
+        /* === VIỀN CHẠY ĐUỔI === */
+        
+        .neon-border {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+        }
+        
+        .neon-border .edge {
+            position: absolute;
+            background: linear-gradient(90deg, #0088ff, #aa00ff, #0088ff);
+            will-change: background-position;
+        }
+        
+        .neon-border .top {
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            animation: runRight 3s linear infinite;
+        }
+        
+        .neon-border .right {
+            top: 0;
+            right: 0;
+            width: 3px;
+            height: 100%;
+            animation: runDown 3s linear infinite 0.75s;
+        }
+        
+        .neon-border .bottom {
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            animation: runLeft 3s linear infinite 1.5s;
+        }
+        
+        .neon-border .left {
+            top: 0;
+            left: 0;
+            width: 3px;
+            height: 100%;
+            animation: runUp 3s linear infinite 2.25s;
+        }
+        
+        @keyframes runRight {
+            0% {
+                background-position: -100% 0;
+                background-size: 200% 100%;
+            }
+            100% {
+                background-position: 200% 0;
+                background-size: 200% 100%;
+            }
+        }
+        
+        @keyframes runDown {
+            0% {
+                background-position: 0 -100%;
+                background-size: 100% 200%;
+            }
+            100% {
+                background-position: 0 200%;
+                background-size: 100% 200%;
+            }
+        }
+        
+        @keyframes runLeft {
+            0% {
+                background-position: 200% 0;
+                background-size: 200% 100%;
+            }
+            100% {
+                background-position: -100% 0;
+                background-size: 200% 100%;
+            }
+        }
+        
+        @keyframes runUp {
+            0% {
+                background-position: 0 200%;
+                background-size: 100% 200%;
+            }
+            100% {
+                background-position: 0 -100%;
+                background-size: 100% 200%;
+            }
+        }
+        
+        .glow-border-bg {
+            position: fixed;
+            top: 3px;
+            left: 3px;
+            width: calc(100% - 6px);
+            height: calc(100% - 6px);
+            pointer-events: none;
+            z-index: 9998;
+            border: 1px solid rgba(0, 136, 255, 0.3);
+            box-shadow: inset 0 0 30px rgba(0, 136, 255, 0.1), 0 0 20px rgba(170, 0, 255, 0.2);
+        }
+        
+        .code-rain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: #05070d;
+            overflow: hidden;
+        }
+        
+        .code-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+        
+        .code-column {
+            position: absolute;
+            top: -200px;
+            display: flex;
+            flex-direction: column;
+            text-shadow: 0 0 5px currentColor;
+        }
+        /* Các màu sắc khác nhau cho code */
+        
+        .color-1 {
+            color: #66d9ef;
+        }
+        /* Blue */
+        
+        .color-2 {
+            color: #a6e22e;
+        }
+        /* Green */
+        
+        .color-3 {
+            color: #f92672;
+        }
+        /* Pink */
+        
+        .color-4 {
+            color: #fd971f;
+        }
+        /* Orange */
+        
+        .color-5 {
+            color: #ae81ff;
+        }
+        /* Purple */
+        
+        @keyframes fall {
+            to {
+                transform: translateY(120vh);
+            }
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+            position: relative;
+            z-index: 10;
+            background: rgba(5, 5, 15, 0.55);
+            backdrop-filter: blur(8px);
+            border-radius: 32px;
+            transition: 0.3s;
+        }
+        
+        .avatar {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #aa00ff;
+            box-shadow: 0 0 20px #aa00ff, 0 0 5px #0088ff;
+            transition: 0.2s;
+        }
+        
+        .avatar:hover {
+            transform: scale(1.03);
+            box-shadow: 0 0 30px #0088ff, 0 0 10px #aa00ff;
+        }
+        
+        .name {
+            font-size: 7vw;
+            /* Sử dụng đơn vị vw (viewport width) để tự co giãn theo màn hình */
+            font-weight: 800;
+            margin-top: 1rem;
+            background: linear-gradient(135deg, #0088ff, #aa00ff, #0088ff);
+            background-size: 200% auto;
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            animation: shimmer 3s linear infinite;
+            letter-spacing: -1px;
+            white-space: nowrap;
+            /* Chống xuống hàng tuyệt đối */
+        }
+        
+        .tagline {
+            font-size: 3vw;
+            /* Chỉnh nhỏ lại để vừa một dòng trên mobile */
+            color: #88aaff;
+            margin-top: 0.3rem;
+            letter-spacing: 1px;
+            /* Giảm độ thưa chữ một chút để tiết kiệm diện tích */
+            text-shadow: 0 0 5px #0088ff;
+            white-space: nowrap;
+            /* Chống xuống hàng tuyệt đối */
+            font-weight: 600;
+        }
+        
+        .social-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .social-btn {
+            background: #11111f;
+            padding: 0.7rem 1.6rem;
+            border-radius: 40px;
+            text-decoration: none;
+            color: #ffffff;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.2s;
+            border: 1px solid #0088ff;
+            box-shadow: 0 0 6px #0088ff66;
+            backdrop-filter: blur(4px);
+        }
+        
+        .social-btn:hover {
+            background: #0088ff;
+            color: #03030a;
+            border-color: #aa00ff;
+            box-shadow: 0 0 20px #0088ff;
+            transform: translateY(-2px);
+        }
+        
+        .card {
+            background: rgba(8, 8, 20, 0.7);
+            backdrop-filter: blur(12px);
+            border-radius: 28px;
+            padding: 1.6rem;
+            margin-bottom: 1.8rem;
+            border-left: 6px solid #aa00ff;
+            border-right: 1px solid #0088ff66;
+            transition: 0.2s;
+        }
+        
+        .card:hover {
+            transform: translateX(5px);
+            border-left-width: 10px;
+        }
+        
+        .card h3 {
+            font-size: 1.7rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #0088ff;
+            text-shadow: 0 0 5px #0088ff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .card h4 {
+            font-size: 1.3rem;
+            /* Nhỏ hơn h3 (1.7rem) */
+            font-weight: 600;
+            /* Độ đậm vừa phải */
+            margin-bottom: 0.8rem;
+            color: #ff2aed;
+            text-shadow: 0 0 5px #ff2aed;
+            /* Căn giữa */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            text-align: center;
+        }
+        
+        .info-line {
+            padding: 0.5rem 0;
+            border-bottom: 1px dashed #0088ff44;
+            font-size: 0.95rem;
+            width: 100%;
+        }
+        
+        .glow {
+            box-shadow: 0 0 15px #cf35e4;
+            text-align: center;
+            /* Căn giữa chữ trong card */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        /* ===== MODAL HACKER GLOW ===== */
+        
+        .modal-glow {
+            border: 1px solid #00ffc3;
+            box-shadow: 0 0 20px #00ffc3, 0 0 40px #0088ff, inset 0 0 20px #00ffc322;
+            border-radius: 15px;
+        }
+        /* Title */
+        
+        .modal-title {
+            font-size: 1.4rem;
+            color: #00ffc3;
+            text-shadow: 0 0 10px #00ffc3;
+        }
+        /* Box */
+        
+        .modal-box {
+            text-align: left;
+            font-size: 0.95rem;
+        }
+        /* Row */
+        
+        .modal-row {
+            margin: 10px 0;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed #0088ff55;
+        }
+        /* Label */
+        
+        .label {
+            color: #888;
+        }
+        /* Giá tiền (XANH) */
+        
+        .price {
+            color: #00ff88;
+            font-weight: bold;
+            text-shadow: 0 0 6px #00ff88;
+        }
+        /* Thông tin (ĐỎ) */
+        
+        .info {
+            color: #ff4d4d;
+            text-shadow: 0 0 6px #ff0000;
+        }
+        /* Gói (TÍM) */
+        
+        .package {
+            color: #aa00ff;
+            text-shadow: 0 0 6px #aa00ff;
+        }
+        /* Note */
+        
+        .modal-note {
+            margin-top: 15px;
+            font-size: 0.8rem;
+            text-align: center;
+            color: #00aaff;
+        }
+        /* Responsive */
+        
+        @media (max-width: 600px) {
+            .modal-title {
+                font-size: 1.1rem;
+            }
+            .modal-box {
+                font-size: 0.85rem;
+            }
+        }
+        
+        .giua {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .neon {
+            background: linear-gradient(45deg, #00ffc3, #0066ff);
+            color: black;
+            font-weight: bold;
+        }
+        
+        .box {
+            border: 1px solid #0088FF44;
+            margin: 10px 0;
+            padding: 12px;
+            border-radius: 10px;
+            text-align: left;
+        }
+        
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            width: 100%;
+        }
+        
+        .btn {
+            display: block;
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #0088FF44;
+            text-decoration: none;
+            color: #0088FF;
+            text-align: center;
+            border-radius: 8px;
+        }
+        
+        .btn:hover {
+            background: #0088FF44;
+            color: black;
+        }
+        
+        .highlight {
+            color: #cc88ff;
+            font-weight: bold;
+            text-shadow: 0 0 3px #aa00ff;
+        }
+        
+        .highlight-1 {
+            color: #4beff5;
+            font-weight: bold;
+            text-shadow: 0 0 3px #658eff;
+        }
+        /* Tìm class .quote-block và cập nhật lại như sau */
+        
+        .quote-block {
+            text-align: center;
+            background: rgba(0, 136, 255, 0.05);
+            padding: 1rem;
+            /* Giảm padding một chút để tiết kiệm không gian */
+            border-radius: 28px;
+            margin: 1.5rem 0;
+            border: 1px solid #0088ffaa;
+            font-style: italic;
+            font-size: 1.1rem;
+            /* Giảm kích cỡ mặc định */
+            color: #cceeff;
+            box-shadow: 0 0 15px #0088ff33;
+            white-space: nowrap;
+            /* Chặn xuống hàng */
+            overflow: hidden;
+            /* Đảm bảo không bị tràn */
+            text-overflow: ellipsis;
+            /* Hiện dấu ... nếu quá dài (tùy chọn) */
+        }
+        /* Cập nhật riêng cho Mobile trong đoạn @media (max-width: 680px) */
+        
+        @media (max-width: 680px) {
+            .quote-block {
+                font-size: 0.85rem;
+                /* Kích thước nhỏ gọn để vừa 1 dòng trên màn hình nhỏ */
+                padding: 0.8rem;
+                letter-spacing: 0.5px;
+            }
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            font-size: 0.75rem;
+            color: #88aaffaa;
+            border-top: 1px solid #0088ff55;
+        }
+        
+        @media (max-width: 680px) {
+            body {
+                padding: 0.8rem;
+            }
+            .container {
+                padding: 1rem;
+            }
+            .name {
+                font-size: 2.2rem;
+            }
+            .social-btn {
+                padding: 0.5rem 1.2rem;
+                font-size: 0.8rem;
+            }
+            .card h3 {
+                font-size: 1.3rem;
+            }
+        }
+        /* =========================================
+           PHẦN CHỈNH SỬA TỐI ƯU BANK-SECTION
+           ========================================= */
+        
+        .bank-section {
+            margin-top: 2rem;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            /* Tự động xuống dòng trên mobile */
+            gap: 20px;
+            justify-content: center;
+            align-items: flex-start;
+            width: 100%;
+        }
+        /* Container của thẻ ngân hàng */
+        
+        .bank-card-container {
+            flex: 1;
+            min-width: 300px;
+            /* Tối thiểu cho mobile */
+            max-width: 420px;
+            /* Không quá to trên PC */
+            background: linear-gradient(45deg, #1f2596, #111);
+            border-radius: 20px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+        /* Panel điều khiển bên cạnh */
+        
+        .bank-controls {
+            flex: 1;
+            min-width: 300px;
+            width: 100%;
+            max-width: 450px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 20px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 136, 255, 0.15);
+        }
+        /* Lưới chọn ngân hàng */
+        
+        .bank-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            /* 4 cột trên cả 2 thiết bị */
+            gap: 8px;
+            max-height: 160px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 12px;
+        }
+        
+        .bank-option {
+            cursor: pointer;
+            text-align: center;
+            padding: 8px 4px;
+            border-radius: 10px;
+            border: 1px solid transparent;
+            transition: 0.2s;
+            background: rgba(255, 255, 255, 0.02);
+        }
+        
+        .bank-option img {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+            margin-bottom: 4px;
+        }
+        
+        .bank-option span {
+            font-size: 9px;
+            font-weight: 500;
+            display: block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        /* Header thẻ */
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+        
+        .bank-logo-img {
+            width: 45px;
+            height: 45px;
+            object-fit: contain;
+            background: white;
+            border-radius: 8px;
+            padding: 4px;
+        }
+        
+        .bank-name-text {
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        /* Body thẻ */
+        
+        .card-body {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .qr-code-box {
+            background: white;
+            padding: 8px;
+            border-radius: 12px;
+            width: 140px;
+            /* Co lại 1 chút cho cân đối mobile */
+            height: 140px;
+            flex-shrink: 0;
+        }
+        
+        .qr-code-box img {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .card-info {
+            flex: 1;
+            text-align: left;
+        }
+        /* Inputs */
+        
+        .form-input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(0, 136, 255, 0.2);
+            padding: 12px;
+            border-radius: 10px;
+            color: white;
+            margin-bottom: 12px;
+            font-size: 14px;
+            outline: none;
+        }
+        
+        .form-input:focus {
+            border-color: #0088ff;
+            box-shadow: 0 0 8px rgba(0, 136, 255, 0.3);
+        }
+        
+        .capture-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(90deg, #0088ff, #aa00ff);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        /* Media Queries bổ sung cho Bank-Section */
+        
+        @media (max-width: 600px) {
+            .bank-card-container {
+                min-width: 100%;
+                padding: 15px;
+            }
+            .qr-code-box {
+                width: 120px;
+                height: 120px;
+            }
+            .bank-name-text {
+                font-size: 1rem;
+            }
+            #accountName {
+                font-size: 0.9rem;
+            }
+        }
+        
+        @media (max-width: 680px) {
+            body {
+                padding: 0.8rem;
+            }
+            .container {
+                padding: 1rem;
+            }
+            .name {
+                font-size: 1.8rem;
+                /* Kích thước cố định tối ưu cho mobile tầm trung */
+            }
+            .tagline {
+                font-size: 0.75rem;
+                /* Kích thước nhỏ gọn cho mobile */
+                letter-spacing: 0.5px;
+            }
+            /* ... các phần khác giữ nguyên ... */
+        }
+        /* ===== VIP MODAL ===== */
+        
+        .vip-popup {
+            border: 1px solid #00ffc3;
+            border-radius: 15px;
+            box-shadow: 0 0 25px #00ffc3, 0 0 60px #0088ff, inset 0 0 20px #00ffc333;
+            background: rgba(5, 5, 15, 0.95);
+            padding: 15px;
+        }
+        /* Header kiểu hacker */
+        
+        .vip-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.8rem;
+            color: #00ffc3;
+            margin-bottom: 10px;
+        }
+        
+        .vip-dot {
+            width: 8px;
+            height: 8px;
+            background: #00ffc3;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #00ffc3;
+        }
+        /* Title */
+        
+        .vip-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            text-align: center;
+            color: #00ffc3;
+            text-shadow: 0 0 10px #00ffc3;
+            margin-bottom: 15px;
+        }
+        /* Table */
+        
+        .vip-table {
+            border: 1px solid #0088ff44;
+            padding: 10px;
+            border-radius: 10px;
+        }
+        /* Row */
+        
+        .vip-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 8px 0;
+            border-bottom: 1px dashed #0088ff33;
+            padding-bottom: 5px;
+        }
+        /* Màu sắc */
+        
+        .vip-price {
+            color: #00ff88;
+            text-shadow: 0 0 6px #00ff88;
+        }
+        
+        .vip-info {
+            color: #ff4d4d;
+            text-shadow: 0 0 6px #ff0000;
+        }
+        
+        .vip-package {
+            color: #aa00ff;
+            text-shadow: 0 0 6px #aa00ff;
+        }
+        
+        .vip-id {
+            color: #00aaff;
+        }
+        /* Terminal */
+        
+        .vip-terminal {
+            margin-top: 15px;
+            background: black;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            color: #00ff88;
+            font-family: monospace;
+            height: 70px;
+            overflow: hidden;
+        }
+        /* Responsive */
+        
+        @media (max-width: 600px) {
+            .vip-title {
+                font-size: 1rem;
+            }
+            .vip-row {
+                font-size: 0.8rem;
+            }
+            .vip-terminal {
+                font-size: 0.7rem;
+            }
+        }
+        /* CSS để tạo thanh chọn Tab và ẩn/hiện nội dung */
+        
+        .tab-navigation {
+            display: flex;
+            justify-content: space-around;
+            gap: 10px;
+            margin: 20px 0;
+            position: relative;
+            z-index: 100;
+        }
+        
+        .tab-link {
+            flex: 1;
+            padding: 12px 5px;
+            border: 1px solid rgba(0, 136, 255, 0.3);
+            background: rgba(0, 0, 0, 0.5);
+            color: #88aaff;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 15px;
+            transition: 0.3s;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+        }
+        
+        .tab-link.active {
+            background: linear-gradient(90deg, #0088ff, #aa00ff);
+            color: white;
+            box-shadow: 0 0 15px rgba(0, 136, 255, 0.5);
+            border: none;
+        }
+        
+        .tab-pane {
+            display: none;
+            /* Ẩn mặc định */
+        }
+        
+        .tab-pane.active {
+            display: block;
+            /* Hiện khi được chọn */
+            animation: fadeInTab 0.5s ease;
+        }
+        
+        @keyframes fadeInTab {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        /* Tùy chỉnh thông báo SweetAlert2 hiện đại */
+        
+        .modern-popup {
+            background: rgba(10, 10, 25, 0.95) !important;
+            backdrop-filter: blur(15px) !important;
+            border: 1px solid rgba(0, 136, 255, 0.3) !important;
+            border-radius: 25px !important;
+            box-shadow: 0 0 30px rgba(0, 136, 255, 0.2) !important;
+        }
+        
+        .modern-title {
+            color: #ffffff !important;
+            font-weight: 800 !important;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 1.5rem !important;
+        }
+        
+        .modern-content {
+            color: #cbd5e0 !important;
+            line-height: 1.6;
+            font-size: 1rem !important;
+        }
+        
+        .confirm-btn-style {
+            background: linear-gradient(90deg, #0088ff, #aa00ff) !important;
+            border-radius: 12px !important;
+            padding: 12px 30px !important;
+            font-weight: bold !important;
+            text-transform: uppercase !important;
+            border: none !important;
+            box-shadow: 0 5px 15px rgba(0, 136, 255, 0.4) !important;
+        }
+        
+        .cancel-btn-style {
+            background: linear-gradient(90deg, hsl(0, 0%, 100%), #656266) !important;
+            border-radius: 12px !important;
+            padding: 12px 30px !important;
+            font-weight: bold !important;
+            text-transform: uppercase !important;
+            border: none !important;
+            box-shadow: 0 5px 15px rgba(0, 136, 255, 0.4) !important;
+        }
+        /* Màu sắc riêng cho nút IOS */
+        
+        .btn-ios {
+            background: linear-gradient(135deg, hsl(207, 100%, 40%) 0%, hsl(194, 74%, 45%) 100%) !important;
+            color: #000 !important;
+            border: none !important;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+            font-weight: 800;
+        }
+        
+        .btn-ios:hover {
+            background: #911cb4 !important;
+            transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.6);
+        }
+        /* Màu sắc riêng cho nút Android */
+        
+        .btn-android {
+            background: linear-gradient(135deg, #af862c 0%, #ffd723 100%) !important;
+            color: #fff !important;
+            border: none !important;
+            box-shadow: 0 0 15px rgba(61, 220, 132, 0.4);
+            font-weight: 800;
+        }
+        
+        .btn-android:hover {
+            background: #dc3d9a !important;
+            transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(61, 220, 132, 0.6);
+        }
+        /* Căn chỉnh icon */
+        
+        .btn img {
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+        /* Lớp dùng chung cho cả 2 nút */
+        
+        .btn-ios,
+        .btn-android {
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap;
+            /* QUAN TRỌNG: Ngăn chặn xuống dòng */
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding: 10px 5px !important;
+            /* Giảm padding trái/phải để thêm không gian cho chữ */
+            font-weight: 700;
+            text-transform: uppercase;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+        /* Chỉnh phông chữ cho Mobile */
+        
+        @media (max-width: 480px) {
+            .btn-ios,
+            .btn-android {
+                font-size: 3.2vw !important;
+                /* Chữ tự co dãn theo màn hình điện thoại */
+                gap: 5px;
+                /* Khoảng cách giữa icon và chữ hẹp lại */
+            }
+            .btn img {
+                width: 16px !important;
+                /* Thu nhỏ icon một chút trên mobile */
+                height: 16px !important;
+            }
+        }
+        /* Chỉnh phông chữ cho PC */
+        
+        @media (min-width: 481px) {
+            .btn-ios,
+            .btn-android {
+                font-size: 1rem !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="code-rain" aria-hidden="true">
+        <div class="code-layer" id="codeRain"></div>
+    </div>
+
+    <div class="neon-border">
+        <div class="edge top"></div>
+        <div class="edge right"></div>
+        <div class="edge bottom"></div>
+        <div class="edge left"></div>
+    </div>
+    <div class="glow-border-bg"></div>
+    <div class="grid-bg"></div>
+
+    <div class="container">
+        <div style="text-align: center;">
+            <img class="avatar" src="https://i.postimg.cc/MZchtM0P/IMG-5874.jpg" alt="avatar">
+            <h1 class="name">DAO XUAN HIEP - DANMII</h1>
+            <div class="tagline">✦ UY TÍN - CHẤT LƯỢNG - AN TOÀN ✦</div>
+        </div>
+        <!-- NÚT MẠNG XÃ HỘI -->
+        <div class="social-grid">
+
+            <a href="https://www.facebook.com/dao.xuan.hiep.908862?mibextid=wwXIfr&rdid=LplZt8WJBj8dwYtE&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F175Gxo67hV%2F%3Fmibextid%3DwwXIfr" target="_blank" class="social-btn">
+                <img src="https://cdn.simpleicons.org/facebook/00ffc3" width="20" height="20"> Facebook
+            </a>
+            <a href="https://tiktok.com/@dhant_danmiii" target="_blank" class="social-btn">
+                <img src="https://cdn.simpleicons.org/tiktok/00ffc3" width="20" height="20"> TikTok
+            </a>
+            <a href="https://zalo.me/0349497146" target="_blank" class="social-btn">
+                <img src="https://cdn.simpleicons.org/zalo/00ffc3" width="20" height="20"> Zalo
+            </a>
+            <a href="https://zalo.me/g/mxyexr938" target="_blank" class="social-btn">
+                <img src="https://cdn.simpleicons.org/zalo/00ffc3" width="20" height="20"> Group
+            </a>
+        </div>
+
+        <div class="quote-block">OFFICIAL WEBSITE BY DHANT</div>
+
+        <div class="tab-navigation">
+            <button class="tab-link active" onclick="openTab(event, 'home-tab')">HOME</button>
+            <button class="tab-link" onclick="openTab(event, 'menu-tab')">MENU</button>
+            <button class="tab-link" onclick="openTab(event, 'service-tab')">SERVICE</button>
+            <button class="tab-link" onclick="openTab(event, 'banking-tab')">BANKING</button>
+        </div>
+
+        <audio id="dhant_music" autoplay onended="nextTrack()"></audio>
+
+        <div id="home-tab" class="tab-pane active">
+            <div class="card">
+                <h3>ID PROFILE</h3>
+                <div class="info-line"><span class="highlight">DEVELOPER</span> : 𝘿𝙃𝙖𝙣𝙩 ᵁ𝖼ᴬ</div>
+                <div class="info-line"><span class="highlight">ZALO</span> : 0349.497.146</div>
+                <div class="info-line"><span class="highlight">FACEBOOK</span> : DEV DHANT</div>
+                <div class="info-line"><span class="highlight">DEVICE</span> : IOS / ANDROID</div>
+                <div class="info-line"><span class="highlight">SERVICE</span> : FILE - APP - TIPS - PROXY</div>
+                <div class="info-line"><span class="highlight">DESCRIPTION</span> : 𝘿𝙃𝙖𝙣𝙩 ᵁ𝖼ᴬ<br>• Support dragging FF [mobile] 📲<br>• Trainning students to Make Files - Source Code - Sell Marketing<br>• Online support 24/7</div>
+            </div>
+
+            <div class="card">
+                <h3>FILE FREE</h3>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <a class="btn btn-ios" href="https://www.mediafire.com/file/9t713tjk8hbts9b/Ios.zip/file">
+                        <img src="https://cdn.simpleicons.org/apple/000000" width="20" height="20"> DOWNLOAD FOR IOS
+                    </a>
+                    <a class="btn btn-android" href="https://www.mediafire.com/file/hj8sjiqb5br03i8/ADR.zip/file">
+                        <img src="https://cdn.simpleicons.org/android/ffffff" width="20" height="20"> DOWNLOAD FOR ANDROID
+                    </a>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="menu-tab" class="tab-pane">
+            <section>
+                <div class="card">
+                    <h3>SUPPORT DARGGING [FILE]</h3>
+                    <div class="grid-3">
+                        <div class="card glow" onclick="showDetail('TARGET HEADLOCK [ios]', '100.000VND', 'Tối ưu thiết bị ➩ Fix all tình trạng: rung tâm - nặng tâm - lố tâm; Hỗ trợ khóa tâm ở vùng cổ, bám đầu 60%  • ANH EM QUAN TÂM CHẤT LƯỢNG - FEEDBACK THÌ INBOX SẼ BIẾT RÕ❗•', 'Vĩnh Viễn')">
+                            <span class="info-line"><b><span class="highlight-1">TARGET HEADLOCK [ios]</span></b>
+                            </span><br>
+                            <b><span style="text-align: center; color: #41a36d;">100.000VND</span></b>
+                        </div>
+                        <div class="card glow" onclick="showDetail('AGUDAREGEDIT [ios]', '200.000VND', 'Tối ưu thiết bị ➩ Fix all tình trạng: rung tâm - nặng tâm - lố tâm; Khi mua sẽ được make theo [địa chỉ ip + udid máy + hệ điều hành ios] và có đường dẫn package/bundle vào app game trong thiết bị (com.dts.freefireth&max)➩ TÁC DỤNG CAO.  • ANH EM QUAN TÂM CHẤT LƯỢNG - FEEDBACK THÌ INBOX SẼ BIẾT RÕ❗•', 'Vĩnh Viễn')">
+                            <span class="info-line"><b><span class="highlight-1">AGUDAREGEDIT [ios]</span></b>
+                            </span><br>
+                            <b><span style="text-align: center; color: #41a36d;">200.000VND</span></b>
+                        </div>
+                        <div class="card glow" onclick="showDetail('PUMIZERDRAG [ios]', '300.000VND', 'Tối ưu thiết bị ➩ Fix all tình trạng: rung tâm - nặng tâm - lố tâm; Hỗ trợ kéo tâm mọi khoảng cách gần - trung - xa, bám đầu 80%.  • ANH EM QUAN TÂM CHẤT LƯỢNG - FEEDBACK THÌ INBOX SẼ BIẾT RÕ❗•', 'Vĩnh Viễn')"><span class="info-line"><b><span class="highlight-1">PUMIZERDRAG [ios]</span></b>
+                            </span><br><b><span style="text-align: center; color: #41a36d;">250.000VND</span></b></div>
+                        <div class="card glow" onclick="showDetail('𝙂𝘼𝙈𝙀𝘼𝙎𝙎𝙀𝙏𝘽𝙐𝙉𝘿𝙇𝙀 [𝘼𝙣𝙙𝙧𝙤𝙞𝙙]', '100.000VND » 400.000VND', 'Giảm thiểu tình trạng bắn thực chiến bị lệch tâm (không dính đầu) ➩ Cải thiện tình trạng bắn   /  *Lưu ý: Android phải bắn thực chiến mới biết được độ ngon của file.  • ANH EM QUAN TÂM CHẤT LƯỢNG - FEEDBACK THÌ INBOX SẼ BIẾT RÕ❗•', 'GÓI VĨNH VIỄN')"><span class="info-line"><b><span class="highlight-1">GAMEASSETBUNDLES [Android]</span></b>
+                            </span><br><b><span><p style="font-size: 0.8rem; color: #d7da42;">V1 » V5</p></span></b><br><b><span style="text-align: center; color: #41a36d;">500.000VND</span></b><br><span>⇅</span><br><b><span style="text-align: center; color: #41a36d;">500.000VND</span></b></div>
+                        <div class="card glow" onclick="showDetail('𝘾𝙊𝙈.𝘿𝙏𝙎.𝙁𝙍𝙀𝙀𝙁𝙄𝙍𝙀 [𝘼𝙣𝙙𝙧𝙤𝙞𝙙]', '100.000VND » 1.000.000VND', 'Chúng tôi sử dụng những công nghệ mới để ép code data ăn sâu vào game ➩ Tăng cảm giác kéo tâm và độ bám đầu từ 50% - 95%.  • ANH EM QUAN TÂM CHẤT LƯỢNG - FEEDBACK THÌ INBOX SẼ BIẾT RÕ❗•', 'GÓI VĨNH VIỄN')"><span class="info-line"><b><span class="highlight-1">COM.DTS.FREEFIRE [Android]</span></b><br><span><p style="font-size: 0.8rem; color: #88aaff;">• (𝙢𝙖𝙠𝙚 𝙙𝙖𝙩𝙖 𝙘𝙝𝙪𝙮ê𝙣 𝙨â𝙪) •</p></span></span><br><b><span><p style="font-size: 0.8rem; color: #d7da42;">V1 » V10</p></span></b><br><b><span style="text-align: center; color: #41a36d;">100.000VND</span></b><br><span>⇅</span><br><b><span style="text-align: center; color: #41a36d;">1.000.000VND</span></b>
+                        </div>
+                    </div>
+            </section>
+            <section>
+                <div class="card">
+                    <h3>SUPPORT DARGGING [APP]</h3>
+                    <div class="grid-3">
+                        <div class="card glow" onclick="showDetail('BUFF MÀN [ios]', '100.000VND', 'Tối ưu thiết bị CPU - GPU - CACHE ➩ Tăng nhạy cho màn hình thiết bị, cho anh em được cảm giác mượt mà, nhạy trong việc kéo tâm full đỏ.  • ANH EM QUAN TÂM CHẤT LƯỢNG - FEEDBACK THÌ INBOX SẼ BIẾT RÕ❗•', 'GÓI VĨNH VIỄN')"><span class="info-line"><b><span class="highlight-1">BUFF MÀN</span></b><br><span><p style="font-size: 0.8rem; color: #88aaff;">• 𝙋𝙋𝙄 𝘾𝙖𝙡𝙘 + 𝘿𝙋𝙄 𝘾𝙖𝙡𝙘𝙪𝙡𝙖𝙩𝙤𝙧 + 𝙍𝙚𝙨𝙤𝙡𝙪𝙩𝙞𝙤𝙣𝙚𝙧 •</p></span></span><br><b><span style="text-align: center; color: #41a36d;">100.000VND</span></b></div>
+                        <div class="card glow" onclick="showDetail('SHADOWDESIGNER [ios]', '300.000VND', 'Khi mua tôi sẽ đưa bạn 1 mã code & version dành riêng cho thiết bị của bạn gắn vào script để chạy ngầm code (SystemDesigner) và cấp file để cài chứng chỉ chạy ngầm (Shadowrocket).  • ANH EM QUAN TÂM CHẤT LƯỢNG - FEEDBACK THÌ INBOX SẼ BIẾT RÕ❗•', 'GÓI VĨNH VIỄN')"><span class="info-line"><b><span class="highlight-1">SHADOWDESIGNER</span></b><br><span><p style="font-size: 0.8rem; color: #88aaff;">• 𝙎𝙮𝙨𝙩𝙚𝙢𝘿𝙚𝙨𝙞𝙜𝙣𝙚𝙧 + 𝙎𝙝𝙖𝙙𝙤𝙬𝙧𝙤𝙘𝙠𝙚𝙩 •</p></span></span><br><b><span style="text-align: center; color: #41a36d;">300.000VND</span></b></div>
+                        <div class="card glow" onclick="showDetail('TOOL SCRIPT [ios]', '400.000VND', 'Tool này sẽ chạy bằng app iSH trên ios. Khi order sẽ nhận đc file root có tên máy của mình và sẽ được cấp key + udid máy của ae để chạy được tool - Ép code chạy ẩn vào trong game qua đường dẫn package/bundle vào app game của ae (com.dts.freefire...).  • ANH EM QUAN TÂM CHẤT LƯỢNG - FEEDBACK THÌ INBOX SẼ BIẾT RÕ❗•', 'tuần/tháng/vĩnhviễn')"><span class="info-line"><b><span class="highlight-1">TOOL SCRIPT</span></b><br><span><p style="font-size: 0.8rem; color: #88aaff;">• 𝘾𝙝ạ𝙮 𝙘𝙤𝙙𝙚 ẩ𝙣 (𝘼𝙥𝙥 𝙞𝙎𝙃) •</p></span></span><br><b><span style="text-align: center; color: #41a36d;">400.000VND</span></b></div>
+                    </div>
+            </section>
+            <section>
+                <div class="card">
+                    <h3>KĨ THUẬT ĂN SÂU VÀO INTERNET MOBILE</h3>
+                    <div class="grid-3">
+                        <div class="card glow" onclick="showDetail('KĨ THUẬT ĂN SÂU VÀO INTERNET MOBILE [ios]', '300.000VND ⇄ 150.000VND', 'Thủ thuật nho nhỏ để hỗ trợ kéo tâm cho anh em bằng cái đầu AI của DHant. IP thì sẽ là tự anh em lấy ở khu vực của anh em luôn và làm trên shadowrocket và VPN trong cài đặt. • ANH EM QUAN TÂM CHẤT LƯỢNG - FEEDBACK THÌ INBOX SẼ BIẾT RÕ❗• ', 'Vĩnh viễn')"><span class="info-line"><b><span class="highlight-1">DANMI SHADOWROCKET</span></b><br><span><p style="font-size: 0.8rem; color: #88aaff;">• 𝙖𝙥𝙥 𝙎𝙝𝙖𝙙𝙤𝙬𝙧𝙤𝙘𝙠𝙚𝙩 + 𝙑𝙋𝙉 𝙩𝙧𝙤𝙣𝙜 𝘾à𝙞 đặ𝙩 •</p></span></span><br><b><span style="text-align: center; color: #41a36d;">300.000VND</span></b><br><span>⟲</span><br>
+                            <b><span style="color:#ff6b6b;">Sale 150.000VND</span></b></div>
+                    </div>
+                </div>
+            </section>
+            <section>
+                <div class="card">
+                    <h3>AIMDRAG [PROXY]</h3>
+                    <div class="grid-3">
+                        <div class="card glow" onclick="showDetail('AIMDRAG [CÓ ATEN]', '150/tuan ; 200/thang',  'Cài 100% trên cài đặt máy và app trong appstore (❌ không tải ngoài) [IP + Port + Cấu hình] ➩ Bản aten này sẽ có cây aten trên đầu giúp anh em dễ leo rank và giữ nút bắn vẫn vàng nhma khi kéo lên sẽ đỏ (nhích = đỏ).  • ANH EM QUAN TÂM CHẤT LƯỢNG - FEEDBACK THÌ INBOX SẼ BIẾT RÕ❗•', 'Tuần/Tháng')"><span class="info-line"><b>ANTENA</b></span><br><b><span style="text-align: center; color: #41a36d;">➩ 150.000VND/TUAN</span></b><br><b><span style="text-align: center; color: #41a36d;">➩ 200.000VND/THANG</span></b></div>
+                        <div class="card glow" onclick="showDetail('AIMDRAG [NO ATEN]', '200/tuan ; 300/thang', 'Cài 100% trên cài đặt máy và app trong appstore (❌ không tải ngoài) [IP + Port + Cấu hình] ➩ Bản no aten này thì sẽ khó bị lộ do không có thanh aten và giữ nút bắn vẫn vàng nhma khi kéo lên sẽ đỏ, nói chung kéo nhẹ mới đỏ(nhích = đỏ).  • ANH EM QUAN TÂM CHẤT LƯỢNG - FEEDBACK THÌ INBOX SẼ BIẾT RÕ❗•', 'Tuần/Tháng')"><span class="info-line"><b>NO ANTENA</b></span><br><b><span style="text-align: center; color: #41a36d;">➩ 200.000VND/TUAN</span></b><br><b><span style="text-align: center; color: #41a36d;">➩ 300.000VND/THANG</span></b></div>
+            </section>
+
+            <section>
+                <div class="card">
+                    <h3>AIMBODY [PROXY]</h3>
+                    <div class="grid-3">
+                        <div class="card glow" onclick="showDetail('AIMBODY [CÓ ATEN]', '150/tuan ; 200/thang', 'Cài 100% trên cài đặt máy và app trong appstore (❌ không tải ngoài) [IP + Port + Cấu hình] ➩ Bản aten này sẽ có cây aten trên đầu giúp anh em dễ leo rank ; Giúp ae chinh phục mọi kẻ địch bằng headshot ko cần kéo tâm, bắn mọi vị trí vẫn đỏ chót.  • ANH EM QUAN TÂM CHẤT LƯỢNG - FEEDBACK THÌ INBOX SẼ BIẾT RÕ❗•', 'Tuần/Tháng')"><span class="info-line"><b>ANTENA</b></span><br><b><span style="text-align: center; color: #41a36d;">➩ 150.000VND/TUAN</span></b><br><b><span style="text-align: center; color: #41a36d;">➩ 200.000VND/THANG</span></b></div>
+                        <div class="card glow" onclick="showDetail('AIMBODY [NO ATEN]', '200/tuan ; 300/thang', 'Cài 100% trên cài đặt máy và app trong appstore (❌ không tải ngoài) [IP + Port + Cấu hình] ➩ Bản no aten này thì sẽ khó bị lộ do không có thanh aten, nhưng rất dễ lộ ở điểm bắn vào đâuu cũng full đỏ ; Dành cho ae muốn chinh phục mọi kẻ địch bằng headshot ko cần kéo tâm, bắn mọi vị trí vẫn đỏ chót. • ANH EM QUAN TÂM CHẤT LƯỢNG - FEEDBACK THÌ INBOX SẼ BIẾT RÕ❗•', 'Tuần/Tháng')"><span class="info-line"><b>NO ANTENA</b></span><br><b><span style="text-align: center; color: #41a36d;">➩ 200.000VND/TUAN</span></b><br><b><span style="text-align: center; color: #41a36d;">➩ 300.000VND/THANG</span></b></div>
+            </section>
+            </div>
+            <div id="service-tab" class="tab-pane">
+                <div class="card">
+                    <h3>FILE [Description]</h3>
+                    <div class="box">
+                        <div class="info-line"><b style="color: #0e7dc7;">✔ Đồ chơi Tác dụng cao - Antiband 100%.</b></div>
+                        <div class="info-line"><b style="color: #62bbf7;">✔ Ngấm vào máy tối ưu all các tình trạng Rung tâm • Nặng tâm • Lố đầu,...</b></div>
+                        <div class="info-line"><b style="color: #85ccfc;">✔ Có đường dẫn PACKAGE/BUNDLE vào App Game trong Thiết Bị🕹 (vd: com.dts.ffth)</b></div>
+                        <div class="info-line"><b style="color: #acdcfc;">✔ Khi mua ae phải đợi 5-10p để DHant make code package/bundle game cho thiết bị riêng, do có code Ini + Json.</b></div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>APP [Description]</h3>
+                    <div class="box">
+                        <div class="info-line"><b style="color: #f7bb62;">✔ Các loại APP bên tôi đều chính gốc trong App Store của Iphone nên an toàn & tin cậy tuyệt đối.</b></div>
+                        <div class="info-line"><b style="color: #f79e62;">✔ Các loại APP đều được dhant chỉnh thông số phù hợp riêng cho thiết bị.</b></div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>TOOL SCRIPT [Description]</h3>
+                    <div class="box">
+                        <div class="info-line"><b style="color: #de62f7;">✔ Được tôi bố trí chạy ẩn ăn sâu vào cấu hình mạng + màn hình máy (gpu, cpu, mượt, giảm delay,...)</b></div>
+                        <div class="info-line"><b style="color: #e65bc7;">✔ Tool hoàn toàn không làm hư thiết bị của ae như những bên khácc, tôi luôn cam kết đảm bảo chịu trách nhiệm.</b></div>
+                        <div class="info-line"><b style="color: #ec99e1;">✔ Tool phải có key + udid => 1 lần mua/1 thiết bị. </b></div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>PROXY [Description]</h3>
+                    <div class="box">
+                        <div class="info-line">✔ ĐẢM BẢO ANTIBAND 🔰</div>
+                        <div class="info-line">✔ Yêu cầu khi chơi thì anh em báo cho DHant để DHant kiểm tra an toàn⚠️</div>
+                        <div class="info-line">✔ 1 bản = 1 thietbi/idgame ✅</div>
+                        <div class="info-line">✔ Khi mua thì BẮT BUỘC Dhant phải call 1 1 support tránh trường hợp cài ngu mất tiền🚀</div>
+                        <div class="info-line">✔ Cam kết NHÍCH = FULL ĐỎ 🔥 (❌ nói quá - đã cam kết thì ❌ phét)</div>
+                        <div class="info-line">✔ Mua combo sẽ rẻ hơn:<br><span><br> • 650.000VND/3thang</span><br><span><br> • 1.200.000VND/6thang</span><br><span><br> • 2.800.000VND/nam</span></div>
+                        <div class="info-line">✔ Có bao nhiêu DHANT hỗ trợ cho combo bấy nhiêu❗</div>
+                    </div>
+
+                    <div class="box">
+                        <div class="info-line"><b style="color: #e2a4ff;">🚀MỘT SỐ CẢNH BÁO CHO ANH EM MUA CÁC LOẠI PROXY & PROXY PIN</b></div>
+                        <div class="info-line">Tôi [❌] không khuyến khích ae sử dụng loại PROXY PIN hoặc các loại PROXY giá rẻ nhó❗</div>
+                        <div class="info-line">
+                            <p><b style="color: #ff6b50;">🔄 PROXY PIN</b></p><br> • Cài = Esign<br> • Dạng là File IPA<br> • Giới hạn 1 số thiết bị yếu<br>
+                            <p> ➩ Được xem là PMT3 can thiệp và 1 khi band là band vĩnh viễn✅</p>
+                        </div>
+                        <div class="info-line">
+                            <p><b style="color: #64ec57;">🌐 PROXY</b></p><br> • Chỉ cần cổng và ip mạng [wifi]<br> • File Cấu hình/Config<br> • Key riêng thiết bị/id game<br> • Khi dùng 4G có thể sử dụng [Shadowrocket hoặc Potatso]<br>
+                            <p> ➩ Hoàn toàn trong cài đặt máy hoặc các app trên app store nên an toàn 100% 🔰<br> ➩ Sử dụng bypass [🔥] cấp vip nên có band cũng band 7 days✅ không có chuyện 30days hoặc vĩnh viễn❌</p>
+                        </div>
+                        <div class="info-line">✔ PROXY vừa dễ dàng cài đặt, [❌] không phải dạng Pmt3 hay File gì mà là [✅] Server mạng chỉ cần [Ip/port/key]</div>
+                        <div class="info-line">
+                            <p><b style="color: #e7782e;">❌ MUA CÁC DẠNG PROXY - HTKT GIÁ RẺ</b></p><br>
+                            <p>⚠️ Những anh em chọn được 1 dạng PROXY ưng ý rồi cũng nên để ý đến GIÁ CẢ❗</p><br> 🔄 Những loại PROXY rẻ tiền thường sẽ:<br> • Bypass kém chất lượng 🔀 BAND 30DAYS & BAND VĨNH VIỄN<br> • Sử dụng các loại PROXY FREE lan trên
+                            mạng đem về bán 🔀 KO AN TOÀN❗<br>
+                            <p>⚠️ ĐẤY LÀ MỘT SỐ TRƯỜNG HỢP DHANT TỪNG GẶP PHẢI❗</p>
+                        </div>
+                        <div class="info-line"><b style="color: #efff5d;">[📣 NHẮN NHỦ]</b><br> KHI ANH EM TRƯỚC KHI MUA BẤT CỨ GÌ CẦN [✅] BÁO CHO DHANT BIẾT TRƯỚC ĐỂ DHANT CHECKSCAM CHO AN TOÀN NHÉEE❗</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>HỌC VIÊN</h3>
+                    <div class="box">
+                        <h4>• KHÓA MAKE FILE •</h4>
+                        <div class="box">
+                            <div class="info-line">• MAKE DẠNG CẤU HÌNH (CƠ BẢN - NÂNG CAO) [.mobileconfig]</div>
+                            <div class="info-line">• MAKE DẠNG CHỨNG NHẬN [.crt]</div>
+                            <div class="info-line">• MAKE DẠNG GAMEASSETBUNDLES [.cache]</div>
+                            <div class="info-line">• MAKE DẠNG THƯỜNG [.dat]</div>
+                            <div class="info-line">• MAKE DẠNG DATA CHUYÊN SÂU [.dat]</div>
+                            <div class="info-line">• MAKE DẠNG SHADOWROCKET [.conf] & [.module]</div>
+                        </div>
+                    </div>
+                    <div class="box">
+                        <h4>• KHÓA VIẾT CODE •</h4>
+                        <div class="box"><b style="color: #89a7e5;">✔ VIẾT CODE FILE GAME:</b>
+                            <div class="info-line">• Lập trình JAVA</div>
+                            <div class="info-line">• Lập trình C++ (CPP) </div>
+                            <div class="info-line">• Lập trình C#</div>
+                            <div class="info-line">• Lập trình JSON</div>
+                            <div class="info-line">• Lập trình Offset</div>
+                            <div class="info-line">• Lập trình HTML-CSS-JAVASCRIPT</div>
+
+                            <div class="info-line">Ngoài ra muốn học code gì thêm thì nói, não DHant to lắm, ở trên anh chỉ nêu những code cơ bản❗</div>
+                        </div>
+                        <div class="box"><b style="color: #89a7e5;">✔ NGÔN NGỮ LẬP TRÌNH:</b>
+                            <div class="info-line">• C++ [soạn sẵn 3 giáo án hơn 300 trang theo chương trình PTIT đào tạo đại học từ xa 2006] </div>
+                            <div class="info-line">• Webside (html-css-js) [Giáo trình đào tạo cho HSSV dễ tiếp thu từ ZERO -> HELLO]</div>
+                        </div>
+
+                        <div class="box"><b style="color: #89a7e5;">✔ BÁN CÁC LOẠI CODE GAME:</b>
+                            <div class="info-line">• C++ code </div>
+                            <div class="info-line">• Java code </div>
+                            <div class="info-line">• C# code</div>
+                            <div class="info-line">• Json code</div>
+                            <div class="info-line">• Ini code</div>
+                            <div class="info-line">• Offset code</div>
+                            <div class="info-line">• Com code</div>
+                            <div class="info-line">• Hex code</div>
+                            <div class="info-line">• Offset code</div>
+                            <div class="info-line"> CÁC LOẠI CODE KHÁC [THEO YÊU CẦU] (số lượng gần 80GB lượng file code)</div>
+                        </div>
+                    </div>
+                    <div class="box">
+                        <h4>• KHÓA MARKETING •</h4>
+                        <div class="box">
+                            <div class="info-line">• ĐÀO TẠO KĨ NĂNG XỬ LÝ DỮ LIỆU CƠ BẢN - NÂNG CAO</div>
+                            <div class="info-line">• ĐÀO TẠO KĨ THUẬT XÂY KÊNH - MẠNG XÃ HỘI</div>
+                            <div class="info-line">• ĐIỀU HÀNH ALL MẠNG XÃ HỘI ZALO - TIKTOK - FACEBOOK...</div>
+                            <div class="info-line">• ĐÀO TẠO HƯỚNG DẪN LÀM CONTENT CREATER - TƯ DUY MARKETING</div>
+                            <div class="info-line">• ĐÀO TẠO CÁCH ĂN NÓI - GIAO TIẾP CHUYÊN NGHIỆP</div>
+                            <div class="info-line">• ĐÀO TẠO KĨ NĂNG EDIT VIDEO CHUYÊN NGHIỆP [EDITOR]</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>CTV MARKETING • CHẠY ADS • AFFILIATES</h3>
+                    <div class="box"><b style="color: #c089ff;">✔ CÔNG VIỆC</b>
+                        <div class="info-line">• Rải lên các box zalo, cộng đồng FB Free Fire, giới thiệu cho anh em bạn bè...</div>
+                        <div class="info-line">• Sử dụng all nền tảng Mạng xã hội để PR các sản phẩm.</div>
+                        <div class="info-line">• Có thể tạo các content video để PR.</div>
+                    </div>
+                    <div class="box"><b style="color: #c089ff;">✔ HOA HỒNG</b>
+                        <div class="info-line">• Lương: 20% - 30%/ngay,tuan,thang.</div>
+                        <div class="info-line">• Hoặc theo thỏa thuận 2 bên.</div>
+                    </div>
+                    <div class="box"><b style="color: #b69836;">✔ Làm 1 thời gian DHant cảm thấy hiệu quả, tốt, năng động thì hoa hồng lên 40-60% là chuyện bình thường nhée🥰</b></div>
+                </div>
+
+                <div class="card">
+                    <h3>CAPTION DHant</h3>
+                    <div class="info-line"><b style="color: #e9b441;">🔥 KHÔNG HÀI LÒNG = KHÔNG THA</b></div>
+                    <div class="info-line"><b style="color: #82f360;">✅ Bên DHant thì chiều lòng khách hàng từ xưa đến giờ, những anh em máy yếu hỗ trợ không dcc DHant ko cho về đâu nhée, hỗ trợ cho anh em (tuần/tháng/năm) đến khi anh em bắn okla ưng ý thi thôi❗</b></div>
+                    <div class="info-line"><b style="color: #e42c4b;">🔰 Do DHant marketing như thế thuii chứ đồ bên DHant 100% Antiband do không can thiệp vào game [❌], chỉ ăn sâu vào máy [✅] của anh em, giúp anh em trải nghiệm tốt hơn thuii 🛡️🔥</b></div>
+                    <div class="info-line">⚠️<br><b style="color: #3767ce;">• Cam kết Khách yêu cầu HOÀN là HOÀN<br>• Hư thiết bị/máy ‹› band acc đền 100%</b></div>
+                </div>
+            </div>
+            <div id="banking-tab" class="tab-pane">
+                <div class="bank-section">
+
+                    <div class="card">
+                        <h3 style="justify-content: center;"><img src="https://cdn.simpleicons.org/quicklook/0088ff" width="24">THANH TOÁN</h3>
+                        <div class="bank-card-container" id="bankCard">
+                            <div class="card-header">
+                                <div id="bankLogo"><img class="bank-logo-img" src="https://hanhdeptrai242.github.io/qr-code-bank/img/mbbank-icon.png" alt="logo"></div>
+                                <div class="bank-name-text" id="bankName">MB BANK</div>
+                            </div>
+                            <div class="card-body">
+                                <div class="card-info">
+                                    <div id="accountName" style="font-weight: bold; font-size: 1.1rem;">DAO XUAN HIEP</div>
+                                    <div id="accountNumber" style="letter-spacing: 2px; margin: 5px 0;">0349497146</div>
+                                    <div id="amountDisplay" style="color: #ffcf00; font-weight: bold; display: none;"></div>
+                                    <div style="font-style: italic; font-size: 0.8rem; opacity: 0.8; margin-top: 10px;">Quét mã để chuyển tiền</div>
+                                </div>
+                                <div class="qr-code-box">
+                                    <img id="qrImage" src="" alt="QR Code">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bank-controls">
+                            <label style="font-size: 0.8rem; margin-bottom: 5px; display: block;">Chọn Ngân hàng:</label>
+                            <div class="bank-grid" id="bankGrid">
+                            </div>
+
+                            <input type="text" id="inputAccountName" class="form-input" placeholder="DAO XUAN HIEP">
+                            <input type="text" id="inputAccountNumber" class="form-input" placeholder="0349497146">
+                            <input type="number" id="inputAmount" class="form-input" placeholder="Số tiền">
+                            <textarea id="inputContent" class="form-input" placeholder="Nội dung chuyển khoản [TÊN + ORDER ĐỒ CHƠI...] *vidu: DHANT , Order Proxy aimdrag no aten/ Done hocvien"></textarea>
+
+                            <button id="captureButton" class="capture-btn">CHỤP & COPY ẢNH THẺ</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" style="border-right: 6px solid #0088ff; border-left: none;">
+                    <h3>CHUYÊN VIÊN HỖ TRỢ NHANH 1S</h3>
+                    <div style="display: grid; gap: 12px; margin-top: 15px;">
+                        <a href="https://zalo.me/0349497146" target="_blank" class="btn" style="background: rgba(0, 136, 255, 0.1); border: 1px solid #0088ff; color: #fff; padding: 15px; border-radius: 15px; font-weight: bold; text-decoration: none; text-align: center; transition: 0.3s;">ZALO</a>
+                    </div>
+                </div>
+
+
+                <div class="card">
+                    <h3>CONTACT</h3>
+                    <div class="info-line">ZALO : <a href="https://zalo.me/0349497146" class="highlight">0349497146</a></div>
+                    <div class="info-line">FACEBOOK : <a href="https://www.facebook.com/dao.xuan.hiep.908862?mibextid=wwXIfr&rdid=LplZt8WJBj8dwYtE&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F175Gxo67hV%2F%3Fmibextid%3DwwXIfr" class="highlight">DEV DHANT</a></div>
+                    <div class="info-line">TIKTOK : <a href="https://tiktok.com/@dhant_danmiii" class="highlight">@dhant_danmiii</a></div>
+                    <div class="info-line">GROUP ZALO : <a href="https://zalo.me/g/mxyexr938" class="highlight">𝐃𝐇𝐚𝐧𝐭 𝐂𝐨𝐦𝐦𝐮𝐧𝐢𝐭𝐲</a></div>
+                </div>
+            </div>
+            <div class="footer">
+                © 2023 DAO XUAN HIEP<br>
+                <span style="color:#aa00ff;">✦ D H A N T • DAO XUAN HIEP • D A N M I I✦</span>
+            </div>
+            </div>
+
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
+
+            <script>
+                // Dữ liệu JSON từ file bank_data.json được tích hợp trực tiếp
+                const bankData = {
+                    "MBBank": {
+                        "logo": "https://hanhdeptrai242.github.io/qr-code-bank/img/mbbank-icon.png",
+                        "color": "#1f2596"
+                    },
+                    "Vietcombank": {
+                        "logo": "https://hanhdeptrai242.github.io/qr-code-bank/img/vietcombank-icon.png",
+                        "color": "#177c44"
+                    },
+                    "Techcombank": {
+                        "logo": "https://hanhdeptrai242.github.io/qr-code-bank/img/techcombank-icon.png",
+                        "color": "#2a2a2a"
+                    },
+                    "BIDV": {
+                        "logo": "https://hanhdeptrai242.github.io/qr-code-bank/img/bidv-icon.png",
+                        "color": "#006b68"
+                    },
+                    "VietinBank": {
+                        "logo": "https://hanhdeptrai242.github.io/qr-code-bank/img/vietinbank-icon.png",
+                        "color": "#005992"
+                    },
+                    "ACB": {
+                        "logo": "https://hanhdeptrai242.github.io/qr-code-bank/img/acb-icon.png",
+                        "color": "#002395"
+                    },
+                    "TPBank": {
+                        "logo": "https://hanhdeptrai242.github.io/qr-code-bank/img/tpbank-icon.png",
+                        "color": "#5f0ea7"
+                    },
+                    "VPBank": {
+                        "logo": "https://hanhdeptrai242.github.io/qr-code-bank/img/vpbank-icon.png",
+                        "color": "#177c44"
+                    }
+                    // Bạn có thể thêm các ngân hàng khác từ file bank_data.json vào đây
+                };
+
+                const elements = {
+                    bankName: document.getElementById('bankName'),
+                    accountName: document.getElementById('accountName'),
+                    accountNumber: document.getElementById('accountNumber'),
+                    qrImage: document.getElementById('qrImage'),
+                    bankLogo: document.getElementById('bankLogo'),
+                    bankCard: document.getElementById('bankCard'),
+                    amountDisplay: document.getElementById('amountDisplay'),
+                    bankGrid: document.getElementById('bankGrid'),
+                    inputName: document.getElementById('inputAccountName'),
+                    inputNumber: document.getElementById('inputAccountNumber'),
+                    inputAmount: document.getElementById('inputAmount'),
+                    inputContent: document.getElementById('inputContent'),
+                    captureBtn: document.getElementById('captureButton')
+                };
+
+                // Khởi tạo Grid ngân hàng
+                function initBankGrid() {
+                    for (const [code, info] of Object.entries(bankData)) {
+                        const div = document.createElement('div');
+                        div.className = 'bank-option';
+                        div.innerHTML = `<img src="${info.logo}" alt="${code}"><span>${code}</span>`;
+                        div.onclick = () => selectBank(code, div);
+                        elements.bankGrid.appendChild(div);
+                    }
+                    // Chọn mặc định ngân hàng đầu tiên
+                    elements.bankGrid.firstChild.click();
+                }
+
+                let selectedBankCode = "MBBank";
+
+                function selectBank(code, element) {
+                    selectedBankCode = code;
+                    document.querySelectorAll('.bank-option').forEach(el => el.classList.remove('active'));
+                    element.classList.add('active');
+                    elements.bankCard.style.background = `linear-gradient(45deg, ${bankData[code].color}, #111)`;
+                    elements.bankLogo.innerHTML = `<img class="bank-logo-img" src="${bankData[code].logo}">`;
+                    elements.bankName.textContent = "Ngân hàng " + code;
+                    updateQR();
+                }
+
+                // Cập nhật QR theo thông tin nhập vào
+                function updateQR() {
+                    const name = elements.inputName.value || "TEN CHU KHOAN";
+                    const number = elements.inputNumber.value || "0000000000";
+                    const amount = elements.inputAmount.value || "";
+                    const content = elements.inputContent.value || "";
+
+                    elements.accountName.textContent = name.toUpperCase();
+                    elements.accountNumber.textContent = number;
+
+                    if (amount) {
+                        elements.amountDisplay.style.display = 'block';
+                        elements.amountDisplay.textContent = parseInt(amount).toLocaleString() + " VND";
+                    } else {
+                        elements.amountDisplay.style.display = 'none';
+                    }
+
+                    // Sử dụng API VietQR
+                    const qrUrl = `https://img.vietqr.io/image/${selectedBankCode}-${number}-compact2.png?amount=${amount}&addInfo=${encodeURIComponent(content)}&accountName=${encodeURIComponent(name)}`;
+                    elements.qrImage.src = qrUrl;
+                }
+
+                // Sự kiện nhập liệu
+                [elements.inputName, elements.inputNumber, elements.inputAmount, elements.inputContent].forEach(input => {
+                    input.addEventListener('input', updateQR);
+                });
+
+                // Tính năng chụp và copy ảnh
+                elements.captureBtn.onclick = async() => {
+                    try {
+                        const dataUrl = await domtoimage.toPng(elements.bankCard);
+                        const blob = await (await fetch(dataUrl)).blob();
+                        await navigator.clipboard.write([new ClipboardItem({
+                            'image/png': blob
+                        })]);
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Đã copy ảnh thẻ!',
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                    } catch (e) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Lỗi khi chụp ảnh!'
+                        });
+                    }
+                };
+
+                window.onload = () => {
+                    initBankGrid();
+                };
+
+                function showDetail(name, price, info, packageType) {
+                    Swal.fire({
+                        title: `<span class="modal-title">${name}</span>`,
+                        html: `
+        <div class="modal-box">
+            <div class="modal-row">
+                <span class="label">Giá tiền:</span> 
+                <span class="price">${price}</span>
+            </div>
+
+            <div class="modal-row">
+                <span class="label">Thông tin:</span> 
+                <span class="info">${info}</span>
+            </div>
+
+            <div class="modal-row">
+                <span class="label">Gói:</span> 
+                <span class="package">${packageType || 'Đang cập nhật'}</span>
+            </div>
+
+            <div class="modal-note">
+                ⚡ Nhấn thanh toán để được Dhant support 1:1
+            </div>
+        </div>
+        `,
+                        showCancelButton: true,
+                        confirmButtonText: 'THANH TOÁN NGAY',
+                        cancelButtonText: 'ĐÓNG',
+                        customClass: {
+                            popup: 'modern-popup',
+                            confirmButton: 'confirm-btn-style',
+                            cancelButton: 'cancel-btn-style'
+                        },
+                        buttonsStyling: false,
+                        background: 'transparent',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Chuyển sang Tab Banking
+                            const bankingTabBtn = document.querySelector('[onclick*="banking-tab"]') || document.querySelector('[onclick*="banking"]');
+                            if (bankingTabBtn) bankingTabBtn.click();
+
+                            // Cuộn xuống phần QR để người dùng thấy ngay
+                            window.scrollTo({
+                                top: document.body.scrollHeight,
+                                behavior: 'smooth'
+                            });
+
+                            // Hiện thông báo hướng dẫn cực đẹp
+                            Swal.fire({
+                                icon: 'success',
+                                iconColor: '#00ffc3',
+                                title: `<div style="color: #ffffff; font-size: 1.3rem; font-weight: bold;">HỆ THỐNG ĐÃ SẴN SÀNG</div>`,
+                                html: `
+                    <div style="color: #cbd5e0; text-align: center; line-height: 1.6;">
+                        Vui lòng <b style="color: #0088ff;">CHỤP ẢNH MÀN HÌNH ĐỒ CHƠI</b> + <b style="color: #0088ff;">BILL CHUYỂN KHOẢN</b><br>
+                        rồi gửi cho <span style="color: #aa00ff; font-weight: bold;">DHANT</span> ở mục Zalo bên dưới để được hỗ trợ và tư vấn trực tiếp!
+                    </div>
+                `,
+                                confirmButtonText: 'TÔI ĐÃ HIỂU',
+                                customClass: {
+                                    popup: 'modern-popup',
+                                    confirmButton: 'confirm-btn-style'
+                                },
+                                buttonsStyling: false,
+                                background: 'transparent'
+                            });
+                        }
+                    });
+                }
+            </script>
+            <script>
+                // Danh sách nhạc của bạn
+                const musicList = [
+                    "https://files.catbox.moe/rhv6b3.mp3",
+                    "https://files.catbox.moe/8ezonj.mp3",
+                    "https://files.catbox.moe/sv697m.mp3",
+                    "https://files.catbox.moe/c3koob.mp3",
+                    "https://files.catbox.moe/wfjvok.mp3",
+                    "https://files.catbox.moe/bhwdbc.mp3"
+                ];
+
+                let currentTrack = 0;
+                const audio = document.getElementById('dhant_music');
+
+                function playMusic() {
+                    audio.src = musicList[currentTrack];
+                    audio.play().catch(error => {
+                        console.log("Trình duyệt chặn tự động phát, chờ tương tác đầu tiên...");
+                    });
+                }
+
+                // Hàm chuyển bài khi hết bài
+                function nextTrack() {
+                    currentTrack = (currentTrack + 1) % musicList.length;
+                    playMusic();
+                }
+
+                // Tự động chạy khi load trang
+                window.addEventListener('load', () => {
+                    playMusic();
+                });
+
+                // Quan trọng: Vượt rào cản Autoplay của trình duyệt
+                // Nếu trình duyệt chặn, nhạc sẽ phát ngay khi bạn click/chạm bất cứ đâu
+                document.addEventListener('click', () => {
+                    if (audio.paused) {
+                        audio.play();
+                    }
+                }, {
+                    once: true
+                });
+            </script>
+            <script>
+                function openTab(evt, tabId) {
+                    // Lấy tất cả các tab-pane và ẩn đi
+                    var panes = document.getElementsByClassName("tab-pane");
+                    for (var i = 0; i < panes.length; i++) {
+                        panes[i].classList.remove("active");
+                    }
+
+                    // Lấy tất cả các tab-link và bỏ trạng thái active
+                    var links = document.getElementsByClassName("tab-link");
+                    for (var i = 0; i < links.length; i++) {
+                        links[i].classList.remove("active");
+                    }
+
+                    // Hiển thị Tab hiện tại và thêm class active vào nút đã nhấn
+                    document.getElementById(tabId).classList.add("active");
+                    evt.currentTarget.classList.add("active");
+                }
+            </script>
+
+            <script>
+                (function() {
+                    const container = document.getElementById('codeRain');
+                    // Danh sách các từ khóa và cú pháp C++
+                    const cppSnippets = [
+                        "#include <iostream>", "int main() {", "std::cout <<", "if (active) {",
+                        "while(true)", "void update()", "float x = 0.5f;", "return 0;",
+                        "std::vector<int>", "template<typename T>", "public:", "private:",
+                        "class Player", "new Pointer()", "nullptr", "using namespace std;",
+                        "virtual ~Base()", "unsigned int", "const double PI"
+                    ];
+
+                    const columnCount = Math.floor(window.innerWidth / 80); // Khoảng cách giữa các cột
+
+                    for (let i = 0; i < columnCount; i++) {
+                        createColumn(i);
+                    }
+
+                    function createColumn(index) {
+                        const col = document.createElement('div');
+                        col.className = 'code-column';
+                        col.style.left = (index * 80 + Math.random() * 20) + 'px';
+
+                        // Tạo hiệu ứng rơi ngẫu nhiên
+                        const duration = 5 + Math.random() * 10;
+                        col.style.animation = `fall ${duration}s linear infinite`;
+                        col.style.animationDelay = `-${Math.random() * 10}s`;
+
+                        // Thêm các dòng code vào cột
+                        for (let j = 0; j < 30; j++) {
+                            const span = document.createElement('span');
+                            span.innerText = cppSnippets[Math.floor(Math.random() * cppSnippets.length)];
+                            // Gán màu ngẫu nhiên từ class color-1 đến color-5
+                            span.className = 'color-' + (Math.floor(Math.random() * 5) + 1);
+                            span.style.opacity = Math.random() * 0.7 + 0.3;
+                            span.style.padding = "2px 0";
+                            col.appendChild(span);
+                        }
+
+                        container.appendChild(col);
+                    }
+                })();
+            </script>
+
+</body>
+
+</html>
