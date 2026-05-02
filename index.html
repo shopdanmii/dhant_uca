@@ -1288,7 +1288,7 @@
                                     <div id="accountName" style="font-weight: bold; font-size: 1.1rem;">DAO XUAN HIEP</div>
                                     <div id="accountNumber" style="letter-spacing: 2px; margin: 5px 0;">0349497146</div>
                                     <div id="amountDisplay" style="color: #ffcf00; font-weight: bold; display: none;"></div>
-                                    <div style="font-style: italic; font-size: 0.8rem; opacity: 0.8; margin-top: 10px;">Quét mã để chuyển tiền</div>
+                                    <div style="font-style: italic; font-size: 0.8rem; opacity: 0.8; margin-top: 10px;">Quét mã QR để chuyển tiền ➩</div>
                                 </div>
                                 <div class="qr-code-box">
                                     <img id="qrImage" src="" alt="QR Code">
@@ -1317,7 +1317,7 @@
                         <a href="https://zalo.me/0349497146" target="_blank" class="btn" style="background: rgba(0, 136, 255, 0.1); border: 1px solid #0088ff; color: #fff; padding: 15px; border-radius: 15px; font-weight: bold; text-decoration: none; text-align: center; transition: 0.3s;">ZALO</a>
                     </div>
                 </div>
-
+                    
 
                 <div class="card">
                     <h3>CONTACT</h3>
@@ -1417,8 +1417,8 @@
 
                 // Cập nhật QR theo thông tin nhập vào
                 function updateQR() {
-                    const name = elements.inputName.value || "TEN CHU KHOAN";
-                    const number = elements.inputNumber.value || "0000000000";
+                    const name = elements.inputName.value || "DAO XUAN HIEP";
+                    const number = elements.inputNumber.value || "0349497146";
                     const amount = elements.inputAmount.value || "";
                     const content = elements.inputContent.value || "";
 
