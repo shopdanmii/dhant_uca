@@ -999,10 +999,164 @@
                 font-size: 1rem !important;
             }
         }
+
+        /* ========== SYSTEM NOTIFICATION (BONG BÓNG + MODAL) ========== */
+        
+        .system-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(12px);
+            z-index: 20000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0.2s, opacity 0.2s;
+        }
+        
+        .system-modal.active {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        .modal-card {
+            max-width: 550px;
+            width: 90%;
+            background: linear-gradient(145deg, #0a0a1a, #010104);
+            border-radius: 32px;
+            border: 1px solid rgba(0, 136, 255, 0.5);
+            box-shadow: 0 0 40px rgba(0, 136, 255, 0.3);
+            padding: 1.5rem;
+        }
+        
+        .modal-card h2 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, #ff5e00, #ff00c8);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 1rem;
+            border-left: 5px solid #ff5e00;
+            padding-left: 15px;
+        }
+        
+        .modal-card .content-item {
+            margin: 1rem 0;
+            padding: 0.5rem 0.8rem;
+            background: rgba(0, 136, 255, 0.08);
+            border-radius: 20px;
+            border-left: 3px solid #0088ff;
+        }
+        
+        .modal-card .sale-highlight {
+            background: rgba(255, 80, 40, 0.2);
+            border-left: 3px solid #ff2200;
+        }
+        
+        .modal-card .sale-highlight strong {
+            color: #ff884d;
+            font-size: 1.1rem;
+        }
+        
+        .modal-card .close-group {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 24px;
+        }
+        
+        .modal-card button {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #0088ff;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+        
+        .modal-card button:hover {
+            background: #0088ff;
+            box-shadow: 0 0 12px #0088ff;
+        }
+        
+        .btn-close-3h {
+            background: #ff8800;
+            border-color: #ffaa33;
+        }
+        
+        .notification-bubble {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: radial-gradient(circle at 30% 20%, #0088ff, #aa00ff);
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 15000;
+            box-shadow: 0 0 20px #0088ff, 0 0 8px #aa00ff;
+            transition: 0.2s;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .notification-bubble:hover {
+            transform: scale(1.08);
+        }
+        
+        .notification-bubble img {
+            width: 32px;
+            height: 32px;
+        }
+        
+        @media (max-width: 600px) {
+            .notification-bubble {
+                width: 45px;
+                height: 45px;
+                bottom: 15px;
+                right: 15px;
+            }
+            .notification-bubble img {
+                width: 26px;
+                height: 26px;
+            }
+            .modal-card h2 {
+                font-size: 1.3rem;
+            }
+        }
+        
     </style>
 </head>
 
 <body>
+    <!-- SYSTEM NOTIFICATION MODAL -->
+    <div id="systemModal" class="system-modal">
+        <div class="modal-card">
+            <h2>🔔 THÔNG BÁO HỆ THỐNG</h2>
+            <div id="modalContentArea"></div>
+            <div class="close-group">
+                <button id="close3hBtn" class="btn-close-3h">Đóng trong 3h</button>
+                <button id="closeNowBtn">Đóng</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- BONG BÓNG NHỎ GÓC PHẢI -->
+    <div id="notificationBubble" class="notification-bubble" style="display: none;">
+        <img src="https://cdn.simpleicons.org/bell/ffffff" alt="thông báo">
+    </div>
 
     <div class="code-rain" aria-hidden="true">
         <div class="code-layer" id="codeRain"></div>
@@ -1645,7 +1799,91 @@
                     }
                 })();
             </script>
+<script>
+                    // ---------- NỘI DUNG THÔNG BÁO (dễ chỉnh sửa) ----------
+                    const systemNotification = {
+                        title: "🔔 THÔNG BÁO HỆ THỐNG",
+                        content: `
+        <div class="content-item">
+            <strong style="color:#88ffaa;">CHÀO MỪNG ĐẾN VỚI SHOPDANMII</strong><br>
+            ✔ Website chuyên cung cấp các <strong style="color:#66d9ef;"> đồ chơi Hỗ trợ kéo tâm đa dạng như</strong><strong style="color:#ffaa88;"> FILE - APP - TOOL - PROXY</strong><br>
+            ✔ Dịch vụ: Đào tạo học viên các khóa <br><strong style="color:#66d9ef;">MAKE FILE - VIẾT CODE - MARKETING</strong><br> 
+            ✔ Tuyển CTV MARKETING hoa hồng ưu đãi!
+        </div>
+        <div class="content-item sale-highlight">
+            <strong>HỆ THỐNG SALE</strong><br>
+            • DANMI SHADOWROCKET: <span style="color:#ffaa44;">Giảm 50% chỉ còn 150.000đ</span><br>
+            • DATA CHUYÊN SÂU V5 + GAMEASSETBUNDLES V1: <span style="color:#ffaa44;">Giảm cực mạnh 550.000đ chỉ còn 150.000đ</span><br>
+            • DATA CHUYÊN SÂU V4 + GAMEASSETBUNDLES V1: <span style="color:#ffaa44;">Giảm cực mạnh 450.000đ chỉ còn 100.000đ (20 slot đầu 50.000đ)</span><br>
+            • Proxy: <strong style="color:#ff884d;">Combo 900.000đ/3thang & 2.900.000đ/vinhvien</strong><br>
+            <strong style="color:#88ffaa;">🔥 SALE MẠNH 50% (>200.000đ) KHI TỰ TÚC BANKING SỚM NHẤT LÚC DHANT BẬN!!!</strong>
+        </div>
+        <div class="content-item">
+            📌 <strong> Shopdanmmii - DHANT rep support khách hàng 24/7, thỉnh thoảng sẽ bận! Nhưng tôi cam kết nhẹ là mua xong anh em phải bắn được </strong><strong style="color:#ff884d;">FULL ĐỎ </strong><strong> nhéee! </strong><br>
+            🔰 <b><strong style="color:#ff88ff;">"KHÔNG HÀI LÒNG = KHÔNG THA" </strong></b><br><strong style="color:#66d9ef;"> BAND ACC VĨNH VIỄN</strong> hoặc <strong style="color:#66d9ef;">HƯ THIẾT BỊ </strong>= <strong style="color:#88ffaa;">ĐỀN 100%</strong>
+        </div>
+    `
+                    };
 
+                    // ----- LOGIC HIỂN THỊ & LƯU TRẠNG THÁI 3H -----
+                    const STORAGE_KEY = "dhant_notify_hide_until";
+
+                    function shouldHideNotification() {
+                        const until = localStorage.getItem(STORAGE_KEY);
+                        if (!until) return false;
+                        return Date.now() < parseInt(until);
+                    }
+
+                    function setHide3Hours() {
+                        const hideUntil = Date.now() + (3 * 60 * 60 * 1000);
+                        localStorage.setItem(STORAGE_KEY, hideUntil);
+                        closeModal();
+                    }
+
+                    function clearHide() {
+                        localStorage.removeItem(STORAGE_KEY);
+                    }
+
+                    function closeModal() {
+                        document.getElementById("systemModal").classList.remove("active");
+                    }
+
+                    function showModal() {
+                        document.getElementById("systemModal").classList.add("active");
+                    }
+
+                    function buildModalContent() {
+                        const container = document.getElementById("modalContentArea");
+                        container.innerHTML = systemNotification.content;
+                    }
+
+                    function initNotification() {
+                        buildModalContent();
+                        const close3h = document.getElementById("close3hBtn");
+                        const closeNow = document.getElementById("closeNowBtn");
+                        close3h.onclick = () => {
+                            setHide3Hours();
+                        };
+                        closeNow.onclick = () => {
+                            closeModal();
+                        };
+                        if (!shouldHideNotification()) {
+                            showModal();
+                        }
+                        const bubble = document.getElementById("notificationBubble");
+                        bubble.style.display = "flex";
+                        bubble.onclick = () => {
+                            if (shouldHideNotification()) clearHide();
+                            showModal();
+                        };
+                    }
+                    // Khởi động khi trang tải xong
+                    if (document.readyState === "loading") {
+                        document.addEventListener("DOMContentLoaded", initNotification);
+                    } else {
+                        initNotification();
+                    }
+                </script>
 </body>
 
 </html>
