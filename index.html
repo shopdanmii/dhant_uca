@@ -1002,97 +1002,106 @@
 
         /* ========== SYSTEM NOTIFICATION (BONG BÓNG + MODAL) ========== */
         
-        .system-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(12px);
-            z-index: 20000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            visibility: hidden;
-            opacity: 0;
-            transition: visibility 0.2s, opacity 0.2s;
-        }
-        
-        .system-modal.active {
-            visibility: visible;
-            opacity: 1;
-        }
-        
-        .modal-card {
-            max-width: 550px;
-            width: 90%;
-            background: linear-gradient(145deg, #0a0a1a, #010104);
-            border-radius: 32px;
-            border: 1px solid rgba(0, 136, 255, 0.5);
-            box-shadow: 0 0 40px rgba(0, 136, 255, 0.3);
-            padding: 1.5rem;
-        }
-        
-        .modal-card h2 {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.8rem;
-            background: linear-gradient(135deg, #ff5e00, #ff00c8);
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-            margin-bottom: 1rem;
-            border-left: 5px solid #ff5e00;
-            padding-left: 15px;
-        }
-        
-        .modal-card .content-item {
-            margin: 1rem 0;
-            padding: 0.5rem 0.8rem;
-            background: rgba(0, 136, 255, 0.08);
-            border-radius: 20px;
-            border-left: 3px solid #0088ff;
-        }
-        
-        .modal-card .sale-highlight {
-            background: rgba(255, 80, 40, 0.2);
-            border-left: 3px solid #ff2200;
-        }
-        
-        .modal-card .sale-highlight strong {
-            color: #ff884d;
-            font-size: 1.1rem;
-        }
-        
-        .modal-card .close-group {
-            display: flex;
-            justify-content: flex-end;
-            gap: 12px;
-            margin-top: 24px;
-        }
-        
-        .modal-card button {
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid #0088ff;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 40px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: 0.2s;
-        }
-        
-        .modal-card button:hover {
-            background: #0088ff;
-            box-shadow: 0 0 12px #0088ff;
-        }
-        
-        .btn-close-3h {
-            background: #ff8800;
-            border-color: #ffaa33;
-        }
+        /* ========== SYSTEM NOTIFICATION (BONG BÓNG + MODAL) ========== */
+.system-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(12px);
+    z-index: 20000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0.2s, opacity 0.2s;
+    padding: 1rem; /* Tạo khoảng cách với viền màn hình */
+}
+.system-modal.active {
+    visibility: visible;
+    opacity: 1;
+}
+/* Modal card chính - đã được tối ưu cho mobile */
+.modal-card {
+    width: 100%;
+    max-width: 500px;   /* Giới hạn chiều rộng tối đa */
+    max-height: 85vh;   /* Giới hạn chiều cao, tránh che kín màn hình */
+    background: linear-gradient(145deg, #0a0a1a, #010104);
+    border-radius: 28px;
+    border: 1px solid rgba(0, 136, 255, 0.5);
+    box-shadow: 0 0 40px rgba(0, 136, 255, 0.3);
+    padding: 1rem;
+    overflow-y: auto;  /* Kích hoạt thanh cuộn dọc */
+    /* Tùy chỉnh thanh cuộn (tùy chọn) */
+    scrollbar-width: thin;
+}
+.modal-card::-webkit-scrollbar {
+    width: 6px;
+}
+.modal-card::-webkit-scrollbar-track {
+    background: #1a1a2e;
+    border-radius: 10px;
+}
+.modal-card::-webkit-scrollbar-thumb {
+    background: #0088ff;
+    border-radius: 10px;
+}
+.modal-card h2 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.5rem; /* Giảm kích thước chữ một chút trên mobile */
+    background: linear-gradient(135deg, #ff5e00, #ff00c8);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    margin-bottom: 0.5rem;
+    border-left: 5px solid #ff5e00;
+    padding-left: 15px;
+}
+.modal-card .content-item {
+    margin: 0.8rem 0;
+    padding: 0.5rem;
+    background: rgba(0, 136, 255, 0.08);
+    border-radius: 16px;
+    border-left: 3px solid #0088ff;
+    font-size: 0.9rem; /* Giảm kích thước chữ nội dung */
+}
+.modal-card .sale-highlight {
+    background: rgba(255, 80, 40, 0.2);
+    border-left: 3px solid #ff2200;
+}
+.modal-card .sale-highlight strong {
+    color: #ff884d;
+    font-size: 1rem;
+}
+.modal-card .close-group {
+    display: flex;
+    justify-content: flex-end; /* Đẩy các nút sang bên phải */
+    gap: 12px;
+    margin-top: 1.5rem; /* Tạo khoảng cách so với nội dung bên trên */
+}
+.modal-card button {
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid #0088ff;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 40px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.2s;
+}
+.modal-card button:hover {
+    background: #0088ff;
+    box-shadow: 0 0 12px #0088ff;
+}
+.btn-close-3h {
+    background: #ff8800;
+    border-color: #ffaa33;
+}
         
         .notification-bubble {
             position: fixed;
