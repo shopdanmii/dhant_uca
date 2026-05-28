@@ -1003,86 +1003,71 @@
         /* ========== SYSTEM NOTIFICATION (BONG BÓNG + MODAL) ========== */
         
         .system-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(12px);
-            z-index: 20000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            visibility: hidden;
-            opacity: 0;
-            transition: visibility 0.2s, opacity 0.2s;
-        }
-        
-        .system-modal.active {
-            visibility: visible;
-            opacity: 1;
-        }
-        
-        .modal-card {
-            max-width: 550px;
-            width: 90%;
-            background: linear-gradient(145deg, #0a0a1a, #010104);
-            border-radius: 32px;
-            border: 1px solid rgba(0, 136, 255, 0.5);
-            box-shadow: 0 0 40px rgba(0, 136, 255, 0.3);
-            padding: 1.5rem;
-        }
-        
-        .modal-card h2 {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 1.8rem;
-            background: linear-gradient(135deg, #ff5e00, #ff00c8);
-            background-clip: text;
-            -webkit-background-clip: text;
-            color: transparent;
-            margin-bottom: 1rem;
-            border-left: 5px solid #ff5e00;
-            padding-left: 15px;
-        }
-        
-        .modal-card .content-item {
-            margin: 1rem 0;
-            padding: 0.5rem 0.8rem;
-            background: rgba(0, 136, 255, 0.08);
-            border-radius: 20px;
-            border-left: 3px solid #0088ff;
-        }
-        
-        .modal-card .sale-highlight {
-            background: rgba(255, 80, 40, 0.2);
-            border-left: 3px solid #ff2200;
-        }
-        
-        .modal-card .sale-highlight strong {
-            color: #ff884d;
-            font-size: 1.1rem;
-        }
-        
-        .modal-card .close-group {
-            display: flex;
-            justify-content: flex-end;
-            gap: 12px;
-            margin-top: 24px;
-        }
-        
-        .modal-card button {
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid #0088ff;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 40px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: 0.2s;
-        }
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(12px);
+    z-index: 20000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0.2s, opacity 0.2s;
+    padding: 16px; /* tạo khoảng cách với viền màn hình */
+    box-sizing: border-box;
+}
+.system-modal.active {
+    visibility: visible;
+    opacity: 1;
+}
+.modal-card {
+    max-width: 500px;
+    width: 100%;
+    max-height: 85vh; /* chiều cao tối đa 85% viewport */
+    background: linear-gradient(145deg, #0a0a1a, #010104);
+    border-radius: 28px;
+    border: 1px solid rgba(0, 136, 255, 0.5);
+    box-shadow: 0 0 40px rgba(0, 136, 255, 0.3);
+    padding: 1rem; /* giảm padding trên mobile */
+    overflow-y: auto; /* cho phép cuộn nội dung */
+    scrollbar-width: thin; /* đẹp hơn trên Firefox */
+}
+/* tuỳ chỉnh thanh cuộn cho Chrome/Safari */
+.modal-card::-webkit-scrollbar {
+    width: 5px;
+}
+.modal-card::-webkit-scrollbar-track {
+    background: rgba(255,255,255,0.1);
+    border-radius: 10px;
+}
+.modal-card::-webkit-scrollbar-thumb {
+    background: #0088ff;
+    border-radius: 10px;
+}
+.modal-card h2 {
+    font-size: 1.4rem; /* nhỏ lại trên mobile */
+    margin-bottom: 0.5rem;
+}
+.modal-card .content-item {
+    margin: 0.8rem 0;
+    padding: 0.5rem;
+    font-size: 0.85rem; /* chữ nhỏ gọn */
+}
+.modal-card .sale-highlight strong {
+    font-size: 1rem;
+}
+.modal-card .close-group {
+    margin-top: 16px;
+    gap: 8px;
+}
+.modal-card button {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+}
         
         .modal-card button:hover {
             background: #0088ff;
